@@ -1,8 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    // Keep an index landing page or redirect to login/register as needed
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout_Auth.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <h1>Chào mừng đến với WA ProjectManagement</h1>
+    <p>Vui lòng <a asp-controller="Auth" asp-action="Login">Đăng nhập</a> hoặc <a asp-controller="Auth" asp-action="Register">Đăng ký</a> để tiếp tục.</p>
 </div>

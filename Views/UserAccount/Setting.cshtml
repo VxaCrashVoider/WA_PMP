@@ -1,0 +1,380 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài đặt - WA_PM</title>
+
+    <style>
+        /* --- Main Layout --- */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Topbar --- */
+        .topbar {
+            height: var(--topbar-height);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* --- Settings Container --- */
+        .settings-container {
+            flex: 1;
+            padding: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Settings Layout */
+        .settings-layout {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        /* Left Menu */
+        .settings-menu {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .settings-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .settings-nav-item:hover {
+            background-color: #ebecf0;
+            color: var(--text-primary);
+        }
+
+        .settings-nav-item.active {
+            background-color: #e9f2ff;
+            color: var(--primary-color);
+        }
+
+        .settings-nav-item i {
+            width: 24px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .menu-category {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #626f86;
+            margin: 24px 12px 8px;
+        }
+
+        /* Content Form Area */
+        .settings-content {
+            flex: 1;
+            background: white;
+        }
+
+        .form-section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Avatar Upload */
+        .avatar-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .current-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #FF5630;
+            color: white;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Form Inputs */
+        .form-label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .form-control, .form-select {
+            font-size: 14px;
+            border-color: var(--border-color);
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(12, 102, 228, 0.2);
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+        }
+        .btn-primary-custom:hover { background-color: var(--primary-hover); }
+
+        .btn-light-custom {
+            background-color: #f1f2f4;
+            color: var(--text-primary);
+            border: none;
+            font-weight: 500;
+        }
+        .btn-light-custom:hover { background-color: #dcdfe4; }
+
+        /* Toggles */
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Utility */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="page-title">Cài đặt tài khoản</div>
+        </div>
+
+        <!-- Settings Container -->
+        <div class="settings-container">
+            <div class="settings-layout">
+
+                <!-- Left Menu -->
+                <nav class="settings-menu">
+                    <div class="menu-category">Cá nhân</div>
+                    <a class="settings-nav-item active" onclick="showSection('profile', this)">
+                        <i class="fa-regular fa-user"></i> Hồ sơ
+                    </a>
+                    <a class="settings-nav-item" onclick="showSection('account', this)">
+                        <i class="fa-solid fa-shield-halved"></i> Tài khoản & Bảo mật
+                    </a>
+                    <a class="settings-nav-item" onclick="showSection('notifications', this)">
+                        <i class="fa-regular fa-bell"></i> Thông báo
+                    </a>
+
+                    <div class="menu-category">Workspace (Admin)</div>
+                    <a class="settings-nav-item" onclick="showSection('organization', this)">
+                        <i class="fa-solid fa-building"></i> Tổ chức
+                    </a>
+                    <a class="settings-nav-item" onclick="showSection('billing', this)">
+                        <i class="fa-regular fa-credit-card"></i> Billing
+                    </a>
+                </nav>
+
+                <!-- Right Content -->
+                <div class="settings-content">
+
+                    <!-- SECTION: PROFILE -->
+                    <div id="section-profile" class="fade-in">
+                        <h2 class="form-section-title">Hồ sơ cá nhân</h2>
+
+                        <div class="avatar-upload-container">
+                            <div class="current-avatar">ME</div>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Ảnh đại diện</h6>
+                                <p class="text-secondary small mb-2">Chấp nhận định dạng jpg, png (tối đa 2MB)</p>
+                                <button class="btn btn-sm btn-light-custom">Thay đổi</button>
+                                <button class="btn btn-sm btn-light text-danger bg-white border-0">Xóa</button>
+                            </div>
+                        </div>
+
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Họ và tên hiển thị</label>
+                                    <input type="text" class="form-control" value="Nguyen Van A">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Chức danh (Job Title)</label>
+                                    <input type="text" class="form-control" value="Senior Developer">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Phòng ban</label>
+                                <select class="form-select">
+                                    <option>Engineering</option>
+                                    <option>Product</option>
+                                    <option>Marketing</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Giới thiệu bản thân (Bio)</label>
+                                <textarea class="form-control" rows="3">Lập trình viên đam mê công nghệ...</textarea>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-primary-custom px-4">Lưu thay đổi</button>
+                                <button type="button" class="btn btn-light-custom">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- SECTION: ACCOUNT & SECURITY -->
+                    <div id="section-account" class="hidden">
+                        <h2 class="form-section-title">Tài khoản & Bảo mật</h2>
+
+                        <form>
+                            <div class="mb-4">
+                                <label class="form-label">Địa chỉ Email</label>
+                                <input type="email" class="form-control bg-light" value="nguyenvana@example.com" readonly>
+                                <div class="form-text">Liên hệ admin để thay đổi email đăng nhập.</div>
+                            </div>
+
+                            <h5 class="fw-bold mb-3 mt-5" style="font-size: 16px;">Đổi mật khẩu</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Mật khẩu hiện tại</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Mật khẩu mới</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Nhập lại mật khẩu mới</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary-custom">Cập nhật mật khẩu</button>
+                        </form>
+                    </div>
+
+                    <!-- SECTION: NOTIFICATIONS -->
+                    <div id="section-notifications" class="hidden">
+                        <h2 class="form-section-title">Cài đặt thông báo</h2>
+
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Email Notifications</h6>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="email1" checked>
+                                <label class="form-check-label" for="email1">
+                                    Có ai đó assign issue cho tôi
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="email2" checked>
+                                <label class="form-check-label" for="email2">
+                                    Có ai đó comment vào issue tôi đang theo dõi
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="email3">
+                                <label class="form-check-label" for="email3">
+                                    Tổng hợp công việc mỗi sáng (Daily Digest)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">In-App Notifications</h6>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="push1" checked>
+                                <label class="form-check-label" for="push1">Hiển thị thông báo trình duyệt</label>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary-custom">Lưu cài đặt</button>
+                    </div>
+
+                    <!-- SECTION: ORGANIZATION (ADMIN) -->
+                    <div id="section-organization" class="hidden">
+                        <h2 class="form-section-title">Thông tin Tổ chức</h2>
+                        <div class="alert alert-info border-0 d-flex align-items-center mb-4">
+                            <i class="fa-solid fa-circle-info me-2"></i>
+                            <div>Bạn đang quản lý tổ chức <strong>Tech Corp</strong>.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tên tổ chức</label>
+                            <input type="text" class="form-control" value="Tech Corp">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">URL (Slug)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">wapm.com/org/</span>
+                                <input type="text" class="form-control" value="tech-corp">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary-custom">Lưu thay đổi</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function showSection(sectionId, btnElement) {
+            // Hide all sections
+            const sections = document.querySelectorAll('[id^="section-"]');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            // Remove active class from nav items
+            const navItems = document.querySelectorAll('.settings-nav-item');
+            navItems.forEach(nav => nav.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+
+            // Activate button
+            if(btnElement) btnElement.classList.add('active');
+        }
+    </script>
+</body>
+</html>

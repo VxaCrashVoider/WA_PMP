@@ -1,0 +1,25 @@
+@model IEnumerable<WA_ProjectManagement.Models.EF.IssueType>
+
+@{
+    ViewData["Title"] = "Issue Types";
+}
+
+<h1>Issue Types</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Is Sub Task</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var it in Model)
+        {
+            <tr>
+                <td>@it.Name</td>
+                <td>@(it.IsSubTask ? "Yes" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>

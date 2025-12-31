@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistic - WA_PM</title>
+    <style>
+        /* --- Main Layout --- */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Topbar --- */
+        .topbar {
+            height: var(--topbar-height);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* --- Statistic Content --- */
+        .stat-container {
+            padding: 40px;
+            background-color: var(--bg-subtle);
+            flex: 1;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Cards */
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            height: 100%;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up {
+            color: #00875A;
+        }
+
+        .trend-down {
+            color: #DE350B;
+        }
+
+        /* Chart Containers */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .table th {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-weight: 600;
+            background-color: #fafbfc;
+        }
+
+        .table td {
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="page-title">Statistic Center</div>
+            <div>
+                <select class="form-select form-select-sm" style="width: 150px;">
+                    <option>Last 30 Days</option>
+                    <option>Last 7 Days</option>
+                    <option>This Year</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Statistic Content -->
+        <div class="stat-container">
+
+            <div class="section-header">
+                <div>
+                    <h3 class="m-0 fw-bold">System Overview</h3>
+                    <p class="text-secondary m-0 small">Performance across all projects</p>
+                </div>
+                <button class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-download me-2"></i>Export Report</button>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Projects</div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fa-solid fa-arrow-trend-up"></i> +2 this month
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Issues Created</div>
+                        <div class="stat-value">148</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fa-solid fa-arrow-trend-up"></i> +15% vs last month
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Issues Resolved</div>
+                        <div class="stat-value">96</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fa-solid fa-check"></i> 65% completion rate
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Overdue Issues</div>
+                        <div class="stat-value text-danger">8</div>
+                        <div class="stat-trend trend-down">
+                            <i class="fa-solid fa-arrow-trend-down"></i> -2 vs last week
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-8">
+                    <div class="stat-card">
+                        <h5 class="fw-bold mb-4">Issue Creation vs Completion</h5>
+                        <div class="chart-container">
+                            <canvas id="velocityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <h5 class="fw-bold mb-4">Issues by Status</h5>
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                        <div class="mt-3 text-center small text-secondary">
+                            Distribution across all active projects
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Progress Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="stat-card p-0 overflow-hidden">
+                        <div class="p-4 border-bottom">
+                            <h5 class="fw-bold m-0">Project Progress</h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="ps-4">Project Name</th>
+                                        <th>Lead</th>
+                                        <th>Deadline</th>
+                                        <th>Progress</th>
+                                        <th>Status</th>
+                                        <th class="text-end pe-4">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-primary">Dự án Alpha</td>
+                                        <td><div class="d-flex align-items-center gap-2"><div style="width: 24px; height: 24px; background:#0c66e4; border-radius:50%; color:white; display:flex; justify-content:center; align-items:center; font-size:10px;">A</div> Nguyen Van A</div></td>
+                                        <td>Jan 15, 2024</td>
+                                        <td style="width: 200px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="progress flex-grow-1" style="height: 6px;">
+                                                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                                                </div>
+                                                <span class="small fw-bold">75%</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-success bg-opacity-10 text-success">On Track</span></td>
+                                        <td class="text-end pe-4"><button class="btn btn-sm btn-light"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-primary">Mobile App Revamp</td>
+                                        <td><div class="d-flex align-items-center gap-2"><div style="width: 24px; height: 24px; background:#6554c0; border-radius:50%; color:white; display:flex; justify-content:center; align-items:center; font-size:10px;">B</div> Tran Thi B</div></td>
+                                        <td>Feb 20, 2024</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="progress flex-grow-1" style="height: 6px;">
+                                                    <div class="progress-bar bg-warning" style="width: 40%"></div>
+                                                </div>
+                                                <span class="small fw-bold">40%</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-warning bg-opacity-10 text-warning">At Risk</span></td>
+                                        <td class="text-end pe-4"><button class="btn btn-sm btn-light"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-primary">Marketing Q4</td>
+                                        <td><div class="d-flex align-items-center gap-2"><div style="width: 24px; height: 24px; background:#00875a; border-radius:50%; color:white; display:flex; justify-content:center; align-items:center; font-size:10px;">C</div> Le Van C</div></td>
+                                        <td>Dec 31, 2023</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="progress flex-grow-1" style="height: 6px;">
+                                                    <div class="progress-bar bg-primary" style="width: 90%"></div>
+                                                </div>
+                                                <span class="small fw-bold">90%</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-primary bg-opacity-10 text-primary">Wrapping Up</span></td>
+                                        <td class="text-end pe-4"><button class="btn btn-sm btn-light"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Chart Config Script -->
+    <script>
+        // Setup Velocity Chart (Bar)
+        const ctxVelocity = document.getElementById('velocityChart').getContext('2d');
+        new Chart(ctxVelocity, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                datasets: [
+                    {
+                        label: 'Created',
+                        data: [12, 19, 15, 25, 22, 30],
+                        backgroundColor: 'rgba(12, 102, 228, 0.7)', // Primary Blue
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Completed',
+                        data: [10, 15, 20, 22, 28, 25],
+                        backgroundColor: 'rgba(54, 179, 126, 0.7)', // Green
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { borderDash: [2, 2] } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Setup Status Chart (Doughnut)
+        const ctxStatus = document.getElementById('statusChart').getContext('2d');
+        new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: ['To Do', 'In Progress', 'Done', 'Review'],
+                datasets: [{
+                    data: [35, 25, 30, 10],
+                    backgroundColor: [
+                        '#dfe1e6', // Grey
+                        '#0c66e4', // Blue
+                        '#36b37e', // Green
+                        '#6554c0'  // Purple
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { boxWidth: 12 } }
+                },
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+</html>

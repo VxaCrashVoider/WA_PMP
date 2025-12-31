@@ -1,0 +1,112 @@
+﻿@* Navbar partial for Dashboard pages. Keep minimal markup (no @page or PageModel). *@
+@* <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" asp-page="/Dashboard/Dashboard">Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDashboard" aria-controls="navbarDashboard" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarDashboard">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" asp-page="/Dashboard/Index">Home</a></li>
+                <li class="nav-item"><a class="nav-link" asp-page="/ProjectBoard/Project_Board">Boards</a></li>
+            </ul>
+        </div>
+    </div>
+</nav> *@   
+@* Views/Shared/Navbars/_SidebarDashboard.cshtml *@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    Func<string, string, bool> isActive = (c, a) => string.Equals(currentController, c, StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, a, StringComparison.OrdinalIgnoreCase);
+}
+<style>
+    /* --- Global Sidebar --- */
+    .global-sidebar {
+        width: var(--sidebar-width);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #091e42;
+        padding: 24px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .app-logo {
+        width: 32px;
+        height: 32px;
+        background-color: #36b37e;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 14px;
+        margin-bottom: 24px;
+        cursor: pointer;
+    }
+
+    .global-nav-item {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9fadbc;
+        border-radius: 50%;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 18px;
+    }
+
+        .global-nav-item:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .global-nav-item.active {
+            background-color: #2684ff;
+            color: white;
+        }
+
+    .user-profile-bottom {
+        margin-top: auto;
+    }
+
+</style>
+<div class="global-sidebar">
+    <div class="app-logo" title="WA_PM Home" onclick="location.href='@Url.Action("Index", "Dashboard")'">W</div>
+
+    <a class="global-nav-item @(isActive("Dashboard", "Index") ? "active" : "")" title="Projects" href="@Url.Action("Index", "Dashboard")">
+        <i class="fa-solid fa-layer-group"></i>
+    </a>
+
+    <a class="global-nav-item @(isActive("Dashboard", "MyWork") ? "active" : "")" title="My Work" href="@Url.Action("MyWork", "Dashboard")">
+        <i class="fa-solid fa-list-check"></i>
+    </a>
+
+    <a class="global-nav-item @(isActive("Dashboard", "Statistic") ? "active" : "")" title="Statistics" href="@Url.Action("Statistic", "Dashboard")">
+        <i class="fa-solid fa-chart-line"></i>
+    </a>
+
+    <a class="global-nav-item @(isActive("Dashboard", "Team") ? "active" : "")" title="Teams" href="@Url.Action("Team", "Dashboard")">
+        <i class="fa-solid fa-users"></i>
+    </a>
+
+    <div class="user-profile-bottom mb-4">
+        <a class="global-nav-item @(isActive("UserAccount", "Setting") ? "active" : "")" title="Settings" href="@Url.Action("Setting", "UserAccount")">
+            <i class="fa-solid fa-gear"></i>
+        </a>
+
+        <a class="global-nav-item mt-2 @(isActive("UserAccount", "Profile") ? "active" : "")" title="Profile" href="@Url.Action("Profile", "UserAccount")">
+            <div style="width: 28px; height: 28px; background: #FF5630; border-radius: 50%; font-size: 12px; color: white; display: flex; align-items: center; justify-content: center;">
+                ME
+            </div>
+        </a>
+    </div>
+</div>
